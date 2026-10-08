@@ -1,326 +1,192 @@
-# AI DevOps Copilot
+# NeuroSync Mobile App
 
-AI DevOps Copilot is an AI-powered Kubernetes incident response and cloud observability platform that helps DevOps and Site Reliability Engineering (SRE) teams detect, analyze, and troubleshoot infrastructure issues in real time.
+NeuroSync is a mobile-first cognitive care coordination app built with React Native and Expo. It helps caregivers, doctors, and care teams monitor mood, track patterns, and stay connected in a low-friction way.
 
-The platform combines Kubernetes monitoring, AI-assisted root cause analysis, observability, cloud infrastructure automation, and an intelligent DevOps assistant into a unified dashboard.
+This repository contains the client application for the NeuroSync experience. The app uses AWS Cognito for authentication and calls remote AWS API Gateway/Lambda endpoints for mood data and community information.
 
----
+## Overview
 
-## Live Demo
+NeuroSync focuses on simple daily wellbeing tracking for people who may need ongoing cognitive or mental health support. The experience includes:
 
-**Public read-only EKS demo**
+- secure sign-up and sign-in flows
+- role-based access for caregivers and doctors
+- daily mood logging with tags and notes
+- trend views for recent mood history
+- care feed filtering and sorting
+- community directory with role-based search
+- accessibility settings for low-stimulus, high-contrast, motion reduction, and font scaling
+- onboarding to introduce the product
 
-[Open the live workload demo](http://aff79ec20ff6d48b88edc9b9831378e1-eb5b31eae7e85162.elb.ap-south-1.amazonaws.com/demo)
+## Features
 
-The public demo shows live pod and deployment readiness in the EKS `ai-devops`
-namespace. It is read-only and does not expose logs, incident history,
-credentials, or remediation controls. The full Cognito-authenticated dashboard
-remains private and is accessed through the documented `kubectl port-forward`
-workflow.
+### Authentication and roles
 
-The showcase currently uses an AWS-provided load-balancer hostname over HTTP;
-it does not require a custom domain, but the internet-facing load balancer
-incurs ongoing AWS charges.
+- Email-based sign-up and sign-in using Amazon Cognito
+- Role selection during registration (`caregiver` or `doctor`)
+- Confirmation flow for newly created accounts
+- Session validation before accessing protected screens
 
-**Demo Video**
+### Mood tracking
 
-https://www.loom.com/share/d082add2d7614f49ace15fdf76da52d9
+- Quick mood selection: Great, Good, Okay, Low, Difficult
+- Optional supportive tags such as slept well, social, calm, active, and tired
+- Notes field for caregiver context
+- Recent mood summaries and trend chart on the dashboard
 
-**GitHub Repository**
+### Care feed
 
-https://github.com/Axddi/ai-devops-copilot
+- View mood logs in a timeline format
+- Sort newest or oldest entries
+- Filter by mood category
+- Review note details and tags associated with each log
 
----
+### Community directory
 
-# Features
+- Search users by name
+- Filter by role (`all`, `doctor`, `caregiver`)
+- View user cards with initials, role badge, and email
+- Navigate to user profiles from the community list
 
-## Kubernetes Monitoring
+### Accessibility
 
-- Real-time Kubernetes cluster monitoring
-- Namespace and pod management
-- Resource utilization monitoring
-- Cluster health overview
-- Deployment status tracking
-- Kubernetes event visualization
+- Low-stimulus mode
+- High-contrast mode
+- Reduced motion toggle
+- Adjustable font scale
+- App styling designed to support readability and comfort
 
-## AI Incident Analysis
+## Tech Stack
 
-- AI-powered root cause analysis
-- Kubernetes event correlation
-- Pod log analysis
-- Incident severity classification
-- Actionable remediation recommendations
-- Intelligent fallback analysis when AI services are unavailable
-
-## Observability
-
-- Prometheus metrics collection
-- Grafana dashboards
-- CPU and memory monitoring
-- Cluster performance visualization
-- Infrastructure health monitoring
-
-## AI DevOps Assistant
-
-Interactive AI assistant capable of assisting with:
-
-- Kubernetes troubleshooting
-- Docker
-- AWS
-- Terraform
-- CI/CD pipelines
-- Linux administration
-- Infrastructure best practices
-- DevOps workflows
-
-## Authentication
-
-- AWS Cognito authentication
-- Secure user sessions
-- Protected application routes
-
-## Infrastructure Automation
-
-- AWS EKS deployment
-- Infrastructure provisioning using Terraform
-- Docker containerization
-- GitHub Actions CI/CD
-- Amazon ECR image deployment
-
----
-
-# Technology Stack
-
-## Frontend
-
-- Next.js
-- React
+- React Native
+- Expo
+- Expo Router
 - TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Auth.js
+- Amazon Cognito Identity JS
+- AsyncStorage
+- React Native Chart Kit
+- AWS API Gateway / Lambda integration
 
-## Backend
+## Project Structure
 
-- FastAPI
-- Python
-- OpenAI / Groq API
-- Kubernetes Python Client
-- Redis
-
-## Observability
-
-- Prometheus
-- Grafana
-
-## Cloud & Infrastructure
-
-- AWS EKS
-- AWS Cognito
-- Terraform
-- Docker
-- Kubernetes
-- Amazon ECR
-- Amazon RDS
-
-## DevOps
-
-- GitHub Actions
-- Docker
-- Kubernetes
-- Terraform
-
----
-
-# Architecture
-
-![AI-DevOps_Copilot](image.png)
-
-
-
-# Project Structure
-
+```text
+neurosync-mobile/
+├── app/                     # Expo Router screens and routes
+│   ├── (auth)/              # login, signup, confirm, onboarding
+│   ├── (tabs)/              # dashboard, feed, community, settings
+│   ├── profile/             # profile detail screen
+│   ├── _layout.tsx          # root layout
+│   └── modal.tsx
+├── src/                     # application logic and services
+│   ├── context/             # UI settings context
+│   ├── navigation/          # navigation helpers
+│   ├── screens/            # legacy screen modules
+│   ├── services/           # Cognito and API clients
+│   └── theme/              # design tokens
+├── components/              # shared UI components
+├── constants/               # app constants
+├── hooks/                   # custom hooks
+├── assets/                  # images, fonts, and static assets
+├── android/                 # Android project files
+├── app.json                 # Expo app metadata
+├── package.json             # project scripts and dependencies
+├── tsconfig.json            # TypeScript config
+├── metro.config.js          # Metro config
+├── eslint.config.js         # ESLint config
+├── eas.json                 # EAS build config
+├── README.md                # project documentation
+└── package-lock.json
 ```
-ai-devops-copilot
-│
-├── api
-│   ├── models
-│   ├── routes
-│   ├── services
-│   ├── utils
-│   └── main.py
-│
-├── frontend
-│   ├── app
-│   ├── components
-│   ├── hooks
-│   ├── lib
-│   └── public
-│
-├── infra
-│   ├── environments
-│   ├── modules
-│   ├── kubernetes
-│   └── scripts
-│
-├── monitoring
-│   ├── prometheus
-│   └── grafana
-│
-└── .github
-    └── workflows
-```
-
----
-
-# Getting Started
 
 ## Prerequisites
 
-- Python 3.11+
-- Node.js 20+
-- Docker
-- Kubernetes Cluster
-- kubectl
-- Terraform
-- AWS CLI
+Before running the app, make sure you have:
 
----
+- Node.js 18+ or later
+- npm
+- Expo CLI (or use the local Expo scripts)
+- Android Studio / Xcode if you want native builds
+- AWS Cognito configuration and an existing API backend
 
-## Clone Repository
+## Getting Started
 
-```bash
-git clone https://github.com/Axddi/ai-devops-copilot.git
-
-cd ai-devops-copilot
-```
-
----
-
-## Backend Setup
+Install dependencies:
 
 ```bash
-cd api
-
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# Linux/macOS
-source .venv/bin/activate
-
-pip install -r requirements.txt
-
-uvicorn main:app --reload
-```
-
----
-
-## Frontend Setup
-
-```bash
-cd frontend
-
 npm install
-
-npm run dev
 ```
 
----
-
-## Tests and Code Quality
-
-The API includes 17 automated pytest regression tests covering Cognito
-authentication, Kubernetes incident detection, incident-history persistence,
-chat validation, and public demo access controls.
-
-Run them from the repository root:
+Start the app:
 
 ```bash
-cd api
-python -m pytest test_regressions.py -v
+npx expo start
 ```
 
----
+For Android:
 
-# Environment Variables
-
-## Backend
-
-```env
-GROQ_API_KEY=
-GROQ_MODEL=
-REDIS_URL=
+```bash
+npm run android
 ```
 
-## Frontend
+For iOS:
 
-```env
-AUTH_SECRET=
-
-NEXTAUTH_URL=http://localhost:3000
-
-COGNITO_CLIENT_ID=
-
-COGNITO_ISSUER=
-
-NEXT_PUBLIC_COGNITO_CLIENT_ID=
+```bash
+npm run ios
 ```
 
----
+For web:
 
-## Incident history and RDS
+```bash
+npm run web
+```
 
-The dashboard History section stores authenticated-user incident records: pod errors, bounded/redacted log excerpts, analysis, suggested remediation steps, and runbook commands. Suggestions are never executed.
+## Configuration
 
-Provisioning and connection steps are documented in [INCIDENT_HISTORY.md](./INCIDENT_HISTORY.md); Cognito setup is in [AUTHENTICATION.md](./AUTHENTICATION.md). Configure `DATABASE_URL` from the RDS-managed Secrets Manager credentials in the separate `ai-devops-db-secrets` Kubernetes Secret. Never commit database credentials. Terraform plan/validation do not provision infrastructure; review and apply from an environment with the correct Terraform state configured.
+This app expects a live AWS backend configuration. The mobile client currently contains the following key configuration values directly in the source:
 
-# Deployment
+- Cognito `UserPoolId` and `ClientId` in `app/(auth)/login.tsx` and `app/(auth)/signup.tsx`
+- API base URL in `src/services/api.ts`
+- Community endpoint in `app/(tabs)/community.tsx`
 
-The platform is designed for cloud-native deployment on AWS.
+Update these values to match your AWS environment before running the app.
 
-Deployment workflow:
+Example pattern:
 
-1. Provision infrastructure using Terraform
-2. Create Amazon ECR repositories
-3. Build Docker images
-4. Push images to Amazon ECR
-5. Deploy workloads to Amazon EKS
-6. Configure Prometheus and Grafana
-7. GitHub Actions automates the CI/CD pipeline
+```ts
+const poolData = {
+  UserPoolId: "YOUR_USER_POOL_ID",
+  ClientId: "YOUR_APP_CLIENT_ID",
+};
 
----
+const BASE_URL = "https://your-api-gateway-url.execute-api.region.amazonaws.com/default";
+```
 
+## Backend Relationship
 
-# Contributing
+The repository does not include the AWS Lambda or DynamoDB implementation source. Instead, it is designed to connect to externally deployed backend resources, such as:
 
-Contributions are welcome.
+- Amazon Cognito for authentication
+- API Gateway endpoints for mood and user data
+- Lambda functions for business logic
+- DynamoDB storage for app records
 
-If you would like to contribute:
+## Environment Notes
 
-1. Fork the repository.
-2. Create a feature branch.
-3. Commit your changes.
-4. Push your branch.
-5. Open a Pull Request.
+The app uses a few local storage keys for accessibility preferences and onboarding state, including:
 
----
+- `seenOnboarding`
+- low-stimulus settings
+- high-contrast settings
+- reduce-motion settings
+- font scale settings
 
-# License
+These are stored with `AsyncStorage` on-device.
 
-This project is licensed under the MIT License.
+## Notes
 
----
+- The project is intentionally mobile-focused and is not a full-stack monorepo.
+- The README reflects the current Expo client implementation in this repository.
+- For production deployments, connect the app to your own Cognito user pool and deployed API endpoints.
 
-# Author
+## License
 
-**Aaditya Saxena**
-
-GitHub: https://github.com/Axddi
-
-LinkedIn: https://www.linkedin.com/in/aadityasaxena/
-
----
-
-If you find this project useful, consider giving it a star.
+This project is currently private and does not include a separate license file.
